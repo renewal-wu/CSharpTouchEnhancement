@@ -1,0 +1,17 @@
+﻿<Window x:Class="FrameForTouch.Sample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:FrameForTouch.Sample"
+        xmlns:frameForTouch="clr-namespace:FrameForTouch;assembly=FrameForTouch"
+        Title="FrameForTouch.Sample">
+    <Window.DataContext>
+        <local:MainWindowViewModel />
+    </Window.DataContext>
+    <Grid>
+        <TextBlock Text="{Binding ElementName=MainFrame, Path=Content.Title}" />
+
+        <frameForTouch:SlideToNavigateFrame x:Name="MainFrame"
+                                            NavigationTargets="{Binding NavigationTargets}"
+                                            NavigationUIVisibility="Hidden" />
+    </Grid>
+</Window>
