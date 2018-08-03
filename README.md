@@ -7,3 +7,6 @@
 6. 按下 Update
 
 ![enter image description here](https://gitlab.com/Garmin-PE-SW/CSharpTouchEnhancement/raw/master/ReadMeImage/NuGetServerSetting.png?inline=false)
+
+7. 開啟 NuGet Package Manager 後，可於 Package source 清單中選取 PI NuGet Server
+![enter image description here](https://gitlab.com/Garmin-PE-SW/CSharpTouchEnhancement/raw/master/ReadMeImage/NuGetPackageManager.png?inline=false)
