@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveChartEnhancement", "Liv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveChartEnhancement.Sample", "LiveChartEnhancement.Sample\LiveChartEnhancement.Sample.csproj", "{9FE46FB9-8C93-458D-88F7-BDD54E0C7EBC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PivotForWPF", "PivotForWPF\PivotForWPF.csproj", "{7F42CD93-345A-4BCA-809A-D562852873CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PivotForWPF.Sample", "PivotForWPF.Sample\PivotForWPF.Sample.csproj", "{D2FDA67E-A683-42F1-B385-E692756BA8C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{9FE46FB9-8C93-458D-88F7-BDD54E0C7EBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FE46FB9-8C93-458D-88F7-BDD54E0C7EBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FE46FB9-8C93-458D-88F7-BDD54E0C7EBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F42CD93-345A-4BCA-809A-D562852873CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F42CD93-345A-4BCA-809A-D562852873CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F42CD93-345A-4BCA-809A-D562852873CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F42CD93-345A-4BCA-809A-D562852873CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2FDA67E-A683-42F1-B385-E692756BA8C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2FDA67E-A683-42F1-B385-E692756BA8C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2FDA67E-A683-42F1-B385-E692756BA8C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2FDA67E-A683-42F1-B385-E692756BA8C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

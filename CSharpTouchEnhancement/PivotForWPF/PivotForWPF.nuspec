@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Louis Wu</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://gitlab.com/Garmin-PE-SW/CSharpTouchEnhancement</licenseUrl>
+    <projectUrl>https://gitlab.com/Garmin-PE-SW/CSharpTouchEnhancement</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Pivot control</description>
+    <releaseNotes>Add Pivot control.</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>Pivot control touch</tags>
+  </metadata>
+</package>
