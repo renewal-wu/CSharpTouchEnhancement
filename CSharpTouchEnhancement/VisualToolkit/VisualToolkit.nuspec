@@ -9,9 +9,9 @@
     <licenseUrl>https://gitlab.com/Garmin-PE-SW/CSharpTouchEnhancement</licenseUrl>
     <projectUrl>https://gitlab.com/Garmin-PE-SW/CSharpTouchEnhancement</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Using gesture to navigate page.</description>
-    <releaseNotes>It is compatible with ScrollViewer.</releaseNotes>
+    <description>Visual-related toolkit.</description>
+    <releaseNotes>Add VisualTreeManager.</releaseNotes>
     <copyright>Copyright 2018</copyright>
-    <tags>Frame Navigate SlideToNavigateFrame</tags>
+    <tags>Visual toolkit XAML VisualTreeManager</tags>
   </metadata>
 </package>

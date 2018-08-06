@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrameForTouch", "FrameForTo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrameForTouch.Sample", "FrameForTouch.Sample\FrameForTouch.Sample.csproj", "{38CE5D8E-FB5E-4C5E-A52E-70C3C6DE3E1A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualToolkit", "VisualToolkit\VisualToolkit.csproj", "{F1EBCF7E-766A-485C-85B0-B3DDA4EC2615}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{38CE5D8E-FB5E-4C5E-A52E-70C3C6DE3E1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38CE5D8E-FB5E-4C5E-A52E-70C3C6DE3E1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38CE5D8E-FB5E-4C5E-A52E-70C3C6DE3E1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1EBCF7E-766A-485C-85B0-B3DDA4EC2615}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1EBCF7E-766A-485C-85B0-B3DDA4EC2615}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1EBCF7E-766A-485C-85B0-B3DDA4EC2615}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1EBCF7E-766A-485C-85B0-B3DDA4EC2615}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

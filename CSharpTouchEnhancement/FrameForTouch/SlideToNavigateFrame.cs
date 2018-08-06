@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using VisualToolkit;
 
 namespace FrameForTouch
 {
@@ -39,6 +40,9 @@ namespace FrameForTouch
         private bool IsLastestDirectToRight { get; set; }
         private double LastestDirectThreshold { get; } = 3;
         private double TranslateXThreshold { get; set; } = 30;
+        private bool IsScrollViewerMode { get; set; } = false;
+        private bool IsDraggingMode { get; set; } = false;
+        private ScrollViewer OriginalSourceScrollViewer { get; set; }
 
         public SlideToNavigateFrame()
         {
@@ -103,6 +107,25 @@ namespace FrameForTouch
 
             SlideToNavigateFrameTranslateTransform = translateTransform;
             this.RenderTransform = SlideToNavigateFrameTranslateTransform;
+
+            var originalSource = e.OriginalSource as FrameworkElement;
+            if (originalSource == null)
+            {
+                return;
+            }
+
+            var scrollViewer = originalSource.AncestorsAndSelf<ScrollViewer>().FirstOrDefault();
+            if (scrollViewer == null)
+            {
+                return;
+            }
+
+            if (scrollViewer.ScrollableWidth == 0)
+            {
+                return;
+            }
+
+            OriginalSourceScrollViewer = scrollViewer;
         }
 
         private void SlideToNavigateFrame_PreviewMouseMove(object sender, MouseEventArgs e)
@@ -113,11 +136,27 @@ namespace FrameForTouch
             }
 
             var currentPoint = e.GetPosition(this);
-
             var currentPointPosition = currentPoint.X;
             var startPointPosition = MouseLeftDownStartPoint.X;
-
             var delta = currentPointPosition == startPointPosition ? 0d : currentPointPosition - startPointPosition;
+
+            if (OriginalSourceScrollViewer != null && IsDraggingMode == false)
+            {
+                if (IsScrollViewerMode ||
+                    (OriginalSourceScrollViewer.HorizontalOffset != 0 && OriginalSourceScrollViewer.HorizontalOffset != OriginalSourceScrollViewer.ScrollableWidth) ||
+                    (OriginalSourceScrollViewer.HorizontalOffset == 0 && delta < 0) ||
+                    (OriginalSourceScrollViewer.HorizontalOffset == OriginalSourceScrollViewer.ScrollableWidth && delta > 0))
+                {
+                    OriginalSourceScrollViewer.ScrollToHorizontalOffset(OriginalSourceScrollViewer.HorizontalOffset - delta);
+                    MouseLeftDownStartPoint = currentPoint;
+
+                    IsScrollViewerMode = true;
+                    return;
+                }
+            }
+
+            IsScrollViewerMode = false;
+
             CumulativeTranslate += delta;
 
             if (e.MouseDevice?.Captured != null && Math.Abs(CumulativeTranslate) >= TranslateXThreshold)
@@ -129,6 +168,8 @@ namespace FrameForTouch
             }
 
             SlideToNavigateFrameTranslateTransform.X += delta;
+
+            IsDraggingMode = SlideToNavigateFrameTranslateTransform.X != 0;
 
             this.Opacity = Math.Max(0d, 1d - Math.Abs(CumulativeTranslate) / 300d);
 
@@ -211,6 +252,9 @@ namespace FrameForTouch
             finally
             {
                 IsLastestDirectToRight = false;
+                IsScrollViewerMode = false;
+                IsDraggingMode = false;
+                OriginalSourceScrollViewer = null;
                 Debug.WriteLine("MouseRelease");
             }
         }
