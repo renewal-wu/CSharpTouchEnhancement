@@ -232,8 +232,15 @@ namespace PivotForWPF
             var targetWidth = ScrollingStyle == ScrollingStyle.Single ? double.NaN : this.ActualWidth;
             var targetHeight = ScrollingStyle == ScrollingStyle.Single ? double.NaN : this.ActualHeight;
 
-            container.Width = targetWidth;
-            container.Height = targetHeight;
+            if (targetWidth > 0)
+            {
+                container.Width = targetWidth;
+            }
+
+            if (targetHeight > 0)
+            {
+                container.Height = targetHeight;
+            }
 
             container.RenderTransform = new TranslateTransform()
             {
