@@ -29,7 +29,20 @@
             <TabItem Header="ScrollingStyle: Whole">
                 <pivotForWPF:Pivot ItemsSource="{Binding DemoDataCollection}"
                                    ItemTemplate="{StaticResource PivotItemTemplate}"
-                                   ScrollingStyle="Whole" />
+                                   ScrollingStyle="Whole"
+                                   IndicatorVisibility="Visible"
+                                   IndicatorSelectedColor="Red"
+                                   IndicatorNormalColor="Black">
+                    <pivotForWPF:Pivot.IndicatorStyle>
+                        <Style TargetType="Ellipse">
+                            <Setter Property="Stroke" Value="Black" />
+                            <Setter Property="StrokeThickness" Value="1" />
+                            <Setter Property="Width" Value="8" />
+                            <Setter Property="Height" Value="8" />
+                            <Setter Property="Margin" Value="4,8,4,8" />
+                        </Style>
+                    </pivotForWPF:Pivot.IndicatorStyle>
+                </pivotForWPF:Pivot>
             </TabItem>
             <TabItem Header="ScrollingStyle: Connected">
                 <pivotForWPF:Pivot ItemsSource="{Binding DemoDataCollection}"
@@ -39,7 +52,20 @@
             <TabItem Header="ScrollingStyle: Single">
                 <pivotForWPF:Pivot ItemsSource="{Binding DemoDataCollection}"
                                    ItemTemplate="{StaticResource PivotItemSingleTemplate}"
-                                   ScrollingStyle="Single" />
+                                   ScrollingStyle="Single"
+                                   IndicatorVisibility="Visible"
+                                   IndicatorSelectedColor="Red"
+                                   IndicatorNormalColor="Black">
+                    <pivotForWPF:Pivot.IndicatorStyle>
+                        <Style TargetType="Ellipse">
+                            <Setter Property="Stroke" Value="Black" />
+                            <Setter Property="StrokeThickness" Value="0.5" />
+                            <Setter Property="Width" Value="12" />
+                            <Setter Property="Height" Value="12" />
+                            <Setter Property="Margin" Value="8,12,8,4" />
+                        </Style>
+                    </pivotForWPF:Pivot.IndicatorStyle>
+                </pivotForWPF:Pivot>
             </TabItem>
             <TabItem Header="ScrollingStyle: System">
                 <pivotForWPF:Pivot ItemsSource="{Binding DemoDataCollection}"

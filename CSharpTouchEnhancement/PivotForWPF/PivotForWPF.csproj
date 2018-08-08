@@ -39,6 +39,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PageData.cs" />
     <Compile Include="Pivot.cs" />
     <Compile Include="PivotDirection.cs" />
     <Compile Include="PivotItem.cs" />

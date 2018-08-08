@@ -17,9 +17,16 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:Pivot">
-                    <ScrollViewer x:Name="ScrollViewer" Focusable="False">
-                        <ItemsPresenter />
-                    </ScrollViewer>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ScrollViewer x:Name="ScrollViewer" Grid.Row="0" Focusable="False">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                        <StackPanel x:Name="IndicatorContainer" Grid.Row="1" HorizontalAlignment="Center" Visibility="{TemplateBinding IndicatorVisibility}" Orientation="Horizontal" />
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

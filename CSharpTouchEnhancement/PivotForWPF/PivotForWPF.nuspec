@@ -10,7 +10,7 @@
     <projectUrl>https://gitlab.com/Garmin-PE-SW/CSharpTouchEnhancement</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Pivot control</description>
-    <releaseNotes>Update size of PivotItem.</releaseNotes>
+    <releaseNotes>Add indicator-related property.</releaseNotes>
     <copyright>Copyright 2018</copyright>
     <tags>Pivot control touch</tags>
   </metadata>

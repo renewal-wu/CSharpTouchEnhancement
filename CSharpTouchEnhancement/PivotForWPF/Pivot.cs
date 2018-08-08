@@ -9,11 +9,13 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Shapes;
 
 namespace PivotForWPF
 {
     [StyleTypedProperty(Property = "ItemContainerStyle", StyleTargetType = typeof(PivotItem))]
     [TemplatePart(Name = "ScrollViewer", Type = typeof(ScrollViewer))]
+    [TemplatePart(Name = "IndicatorContainer", Type = typeof(Panel))]
     public class Pivot : Selector
     {
         public static readonly DependencyProperty ScrollingStyleProperty =
@@ -36,6 +38,7 @@ namespace PivotForWPF
             var isSystemAnimation = pivot.ScrollingStyle == ScrollingStyle.System;
             pivot.SetSlidingMode(isSystemAnimation);
             pivot.ResetContainerSize();
+            pivot.RefreshIndicator();
         }
 
         /// <summary>
@@ -69,6 +72,58 @@ namespace PivotForWPF
             var isSystemAnimation = pivot.ScrollingStyle == ScrollingStyle.System;
             pivot.SetSlidingMode(isSystemAnimation);
             pivot.ResetContainerSize();
+        }
+
+        public static readonly DependencyProperty IndicatorVisibilityProperty =
+            DependencyProperty.Register(nameof(IndicatorVisibility), typeof(Visibility), typeof(Pivot), new PropertyMetadata(Visibility.Collapsed));
+
+        public Visibility IndicatorVisibility
+        {
+            get { return (Visibility)GetValue(IndicatorVisibilityProperty); }
+            set { SetValue(IndicatorVisibilityProperty, value); }
+        }
+
+        public static readonly DependencyProperty IndicatorStyleProperty =
+            DependencyProperty.Register(nameof(IndicatorStyle), typeof(Style), typeof(Pivot), new PropertyMetadata(default(Style), OnIndicatorVisibilityChanged));
+
+        public Style IndicatorStyle
+        {
+            get { return (Style)GetValue(IndicatorStyleProperty); }
+            set { SetValue(IndicatorStyleProperty, value); }
+        }
+
+        private static void OnIndicatorVisibilityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var pivot = d as Pivot;
+            if (pivot == null)
+            {
+                return;
+            }
+
+            if (pivot.IndicatorVisibility != Visibility.Visible)
+            {
+                return;
+            }
+
+            pivot.RefreshIndicator();
+        }
+
+        public static readonly DependencyProperty IndicatorSelectedColorProperty =
+            DependencyProperty.Register(nameof(IndicatorSelectedColor), typeof(Color), typeof(Pivot), new PropertyMetadata(Colors.Transparent));
+
+        public Color IndicatorSelectedColor
+        {
+            get { return (Color)GetValue(IndicatorSelectedColorProperty); }
+            set { SetValue(IndicatorSelectedColorProperty, value); }
+        }
+
+        public static readonly DependencyProperty IndicatorNormalColorProperty =
+            DependencyProperty.Register(nameof(IndicatorNormalColor), typeof(Color), typeof(Pivot), new PropertyMetadata(Colors.Transparent));
+
+        public Color IndicatorNormalColor
+        {
+            get { return (Color)GetValue(IndicatorNormalColorProperty); }
+            set { SetValue(IndicatorNormalColorProperty, value); }
         }
 
         /// <summary>
@@ -123,6 +178,55 @@ namespace PivotForWPF
 
         private ScrollViewer ScrollViewer { get; set; }
 
+        private Panel IndicatorContainer { get; set; }
+
+        private PageData PageData
+        {
+            get
+            {
+                if (this.Items == null || this.Items.Count == 0)
+                {
+                    return new PageData()
+                    {
+                        PageSize = 1,
+                        PageCount = 0
+                    };
+                }
+
+                var itemCount = this.Items.Count;
+
+                if (ScrollingStyle != ScrollingStyle.Single)
+                {
+                    return new PageData()
+                    {
+                        PageSize = 1,
+                        PageCount = itemCount
+                    };
+                }
+
+                var pageSize = 1;
+
+                for (int i = 0; i < this.Items.Count; i++)
+                {
+                    var itemWidth = (this.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement)?.ActualWidth;
+                    if (itemWidth.HasValue && itemWidth.Value > 0)
+                    {
+                        pageSize = (int)(this.ActualWidth / itemWidth.Value);
+
+                        var modItemCount = itemCount % pageSize;
+                        itemCount = itemCount / pageSize + (modItemCount > 0 ? 1 : 0);
+                        break;
+                    }
+                }
+
+                return new PageData()
+                {
+                    PageSize = pageSize,
+                    PageCount = itemCount
+                };
+            }
+        }
+
         static Pivot()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Pivot), new FrameworkPropertyMetadata(typeof(Pivot)));
@@ -141,11 +245,15 @@ namespace PivotForWPF
             base.OnApplyTemplate();
 
             ScrollViewer = GetTemplateChild("ScrollViewer") as ScrollViewer;
+            IndicatorContainer = GetTemplateChild("IndicatorContainer") as Panel;
+
             if (ScrollViewer != null)
             {
                 ScrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
                 ScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
             }
+
+            RefreshIndicator();
         }
 
         private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -206,6 +314,15 @@ namespace PivotForWPF
         private void Pivot_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             ResetContainerSize();
+
+            if (ScrollingStyle == ScrollingStyle.Single)
+            {
+                // Single Style 的分頁大小會隨著畫面尺寸而改變，所以 SelectedIndex 也需要跟著改變
+                RefreshSelectedIndex();
+
+                // Single Style 的 Indicator 與畫面尺寸有關，所以需要重新畫
+                RefreshIndicator();
+            }
         }
 
         private void ResetContainerSize()
@@ -231,6 +348,11 @@ namespace PivotForWPF
 
             var targetWidth = ScrollingStyle == ScrollingStyle.Single ? double.NaN : this.ActualWidth;
             var targetHeight = ScrollingStyle == ScrollingStyle.Single ? double.NaN : this.ActualHeight;
+
+            if (ScrollingStyle != ScrollingStyle.Single && targetHeight > 0 && IndicatorContainer != null && IndicatorVisibility == Visibility.Visible)
+            {
+                targetHeight -= IndicatorContainer.ActualHeight;
+            }
 
             if (targetWidth > 0)
             {
@@ -303,6 +425,8 @@ namespace PivotForWPF
                 {
                     return;
                 }
+
+                RefreshIndicator();
 
                 if (IsSkipAnimationOnce)
                 {
@@ -419,7 +543,7 @@ namespace PivotForWPF
                     {
                         BeginTime = TimeSpan.FromMilliseconds(ScrollingStyle == ScrollingStyle.Whole ? 200 : 0),
                         To = addTargetPosition,
-                        Duration = TimeSpan.FromMilliseconds(Math.Max(addTargetPosition / 5, 150))
+                        Duration = TimeSpan.FromMilliseconds(Math.Max(Math.Abs(addTargetPosition) / 5, 150))
                     };
 
                     var translateTransformDependencyProperty = GetTranslateTransformDependencyProperty();
@@ -699,45 +823,21 @@ namespace PivotForWPF
                 return SelectedIndex + 1;
             }
 
-            var sizePropertyInfo = GetPropertyInfo<FrameworkElement>();
+            var pageData = PageData;
+            var targetSelectedIndex = SelectedIndex + pageData.PageSize;
+            var diff = this.Items.Count - targetSelectedIndex;
 
-            var threshouldSize = (double)sizePropertyInfo.GetValue(this);
-            var sumSize = 0d;
-            var lastContainerSize = 0d;
-            double? containerSize = 0d;
-
-            for (int i = SelectedIndex; i < Items.Count; i++)
+            if (targetSelectedIndex > this.Items.Count)
             {
-                if (ItemContainerGenerator.Items.Count <= i)
-                {
-                    break;
-                }
-
-                var item = ItemContainerGenerator.Items[i];
-
-                var container = ItemContainerGenerator.ContainerFromItem(item) as FrameworkElement;
-                containerSize = container == null ? default(double?) : (double)sizePropertyInfo.GetValue(container);
-                if (containerSize.HasValue == false || containerSize.Value <= 0)
-                {
-                    // 遇到正處於虛擬化的 item，則先拿其他 item 的尺寸推算
-                    containerSize = lastContainerSize;
-                }
-                else
-                {
-                    lastContainerSize = containerSize.Value;
-                }
-
-                sumSize += containerSize.Value;
-
-                if (sumSize >= threshouldSize)
-                {
-                    // 後續尺寸還夠
-                    return i;
-                }
+                targetSelectedIndex = this.Items.Count;
+            }
+            else if (diff < pageData.PageSize)
+            {
+                // 不足以顯示一頁
+                targetSelectedIndex = SelectedIndex + diff;
             }
 
-            // 都找完了，後續尺寸還不夠，就只能維持在 SelectedIndex
-            return SelectedIndex;
+            return targetSelectedIndex;
         }
 
         private int GetPreviousSelectedIndex()
@@ -747,48 +847,20 @@ namespace PivotForWPF
                 return SelectedIndex - 1;
             }
 
-            var sizePropertyInfo = GetPropertyInfo<FrameworkElement>();
+            var pageData = PageData;
+            var targetSelectedIndex = SelectedIndex - pageData.PageSize;
+            var modResult = targetSelectedIndex % pageData.PageSize;
 
-            var currentIndex = 0;
-            var threshouldSize = (double)sizePropertyInfo.GetValue(this);
-            var sumSize = 0d;
-            var lastContainerSize = 0d;
-            double? containerSize = 0d;
-
-            for (int i = SelectedIndex - 1; i >= 0; i--)
+            if (targetSelectedIndex <= 0)
             {
-                if (ItemContainerGenerator.Items.Count <= i)
-                {
-                    break;
-                }
-
-                var item = ItemContainerGenerator.Items[i];
-
-                var container = ItemContainerGenerator.ContainerFromItem(item) as FrameworkElement;
-                containerSize = container == null ? default(double?) : (double)sizePropertyInfo.GetValue(container);
-                if (containerSize.HasValue == false || containerSize.Value <= 0)
-                {
-                    // 遇到正處於虛擬化的 item，則先拿其他 item 的尺寸推算
-                    containerSize = lastContainerSize;
-                }
-                else
-                {
-                    lastContainerSize = containerSize.Value;
-                }
-
-                currentIndex = i;
-
-                sumSize += containerSize.Value;
-
-                if (sumSize >= threshouldSize)
-                {
-                    // 前面尺寸還夠
-                    return i + 1;
-                }
+                targetSelectedIndex = 0;
+            }
+            else if (modResult != 0)
+            {
+                targetSelectedIndex = SelectedIndex - modResult;
             }
 
-            // 都找完了，前面尺寸還不夠，代表前面的元素已經不夠了，直接指定為 currentIndex
-            return currentIndex;
+            return targetSelectedIndex;
         }
 
         private bool SetSelectedIndex(int selectedIndex, bool isSkipScrollAnimation = false)
@@ -915,6 +987,137 @@ namespace PivotForWPF
             }
 
             return default(DependencyProperty);
+        }
+
+        private void RefreshIndicator()
+        {
+            if (IndicatorVisibility != Visibility.Visible)
+            {
+                return;
+            }
+
+            if (IndicatorContainer == null || IndicatorContainer.Children == null)
+            {
+                return;
+            }
+
+            if (this.Items == null)
+            {
+                IndicatorContainer.Children.Clear();
+                return;
+            }
+
+            var pageData = PageData;
+            var pageCount = pageData.PageCount;
+            if (pageCount <= 1)
+            {
+                // 0 個 item 或 1 個 item 時，不顯示 indicator
+                IndicatorContainer.Children.Clear();
+                return;
+            }
+
+            var pageSize = pageData.PageSize;
+
+            var currentIndicatorCount = IndicatorContainer.Children.Count;
+
+            if (pageCount > currentIndicatorCount)
+            {
+                IndicatorContainer.Children.Clear();
+
+                for (int i = 0; i < pageCount; i++)
+                {
+                    var ellipse = new Ellipse()
+                    {
+                        Style = IndicatorStyle
+                    };
+
+                    WeakEventManager<Ellipse, MouseButtonEventArgs>.AddHandler(ellipse, nameof(ellipse.MouseLeftButtonUp), Ellipse_MouseLeftButtonUp);
+
+                    IndicatorContainer.Children.Add(ellipse);
+                }
+            }
+            else if (pageCount < currentIndicatorCount)
+            {
+                for (int i = 0; i < currentIndicatorCount - pageCount; i++)
+                {
+                    IndicatorContainer.Children.RemoveAt(0);
+                }
+            }
+
+            RefreshSelectedIndicator(pageCount, pageSize);
+        }
+
+        private void RefreshSelectedIndicator(int pageCount, int pageSize)
+        {
+            var selectedIndex = this.SelectedIndex;
+            if (ScrollingStyle == ScrollingStyle.Single && pageSize > 0)
+            {
+                selectedIndex = Convert.ToInt32(Math.Ceiling((double)this.SelectedIndex / (double)pageSize));
+            }
+
+            for (int i = 0; i < pageCount; i++)
+            {
+                var ellipse = IndicatorContainer.Children[i] as Ellipse;
+                if (ellipse == null)
+                {
+                    continue;
+                }
+
+                var isSelected = i == selectedIndex;
+                var targetColor = isSelected ? IndicatorSelectedColor : IndicatorNormalColor;
+                var currentBrush = ellipse.Fill as SolidColorBrush;
+                if (currentBrush == null)
+                {
+                    ellipse.Fill = new SolidColorBrush(targetColor);
+                }
+                else if (currentBrush.Color != targetColor)
+                {
+                    currentBrush.Color = targetColor;
+                }
+            }
+        }
+
+        private void RefreshSelectedIndex()
+        {
+            if (ScrollingStyle != ScrollingStyle.Single)
+            {
+                return;
+            }
+
+            var pageData = PageData;
+            var currentSelectedIndex = this.SelectedIndex;
+            var modResult = currentSelectedIndex % pageData.PageSize;
+            if (modResult == 0)
+            {
+                return;
+            }
+
+            var divideResult = currentSelectedIndex / pageData.PageSize;
+            var targetSelectedIndex = pageData.PageSize * divideResult;
+            ScrollToTargetIndex(targetSelectedIndex);
+        }
+
+        private void Ellipse_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var ellipse = sender as Ellipse;
+            if (ellipse == null)
+            {
+                return;
+            }
+
+            var targetIndex = IndicatorContainer.Children.IndexOf(ellipse);
+            if (targetIndex < 0)
+            {
+                return;
+            }
+
+            if (ScrollingStyle == ScrollingStyle.Single)
+            {
+                var pageData = PageData;
+                targetIndex = targetIndex * pageData.PageSize;
+            }
+
+            ScrollToTargetIndex(targetIndex);
         }
     }
 }
