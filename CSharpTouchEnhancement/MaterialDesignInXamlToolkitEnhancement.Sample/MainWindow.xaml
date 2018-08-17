@@ -1,0 +1,29 @@
+﻿<Window x:Class="MaterialDesignInXamlToolkitEnhancement.Sample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="MaterialDesignInXamlToolkitEnhancement.Sample">
+    <materialDesign:DialogHost Name="rootdg" Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}" Style="{StaticResource BlurDrawerHostStyle}">
+            <materialDesign:DrawerHost.LeftDrawerContent>
+                <StackPanel>
+                    <ToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="16" IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
+                    <TextBlock Text="Left drawer" FontSize="48" TextWrapping="Wrap" />
+                </StackPanel>
+            </materialDesign:DrawerHost.LeftDrawerContent>
+
+            <StackPanel>
+                <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="PrimaryDark">
+                    <Grid>
+                        <ToggleButton x:Name="MenuToggleButton" HorizontalAlignment="Left" IsChecked="False" Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
+                    </Grid>
+                </materialDesign:ColorZone>
+
+                <TextBlock Text="Main content" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="48" />
+            </StackPanel>
+        </materialDesign:DrawerHost>
+    </materialDesign:DialogHost>
+</Window>

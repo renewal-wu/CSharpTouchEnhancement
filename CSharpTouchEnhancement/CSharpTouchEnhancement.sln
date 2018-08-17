@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrameForTouch.Sample", "Fra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualToolkit", "VisualToolkit\VisualToolkit.csproj", "{F1EBCF7E-766A-485C-85B0-B3DDA4EC2615}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialDesignInXamlToolkitEnhancement", "MaterialDesignInXamlToolkitEnhancement\MaterialDesignInXamlToolkitEnhancement.csproj", "{23C73101-C3F4-440B-86BD-1EA33181B2A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialDesignInXamlToolkitEnhancement.Sample", "MaterialDesignInXamlToolkitEnhancement.Sample\MaterialDesignInXamlToolkitEnhancement.Sample.csproj", "{96FEE1C5-91AF-4C0C-AA03-F5505FF1A786}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{F1EBCF7E-766A-485C-85B0-B3DDA4EC2615}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1EBCF7E-766A-485C-85B0-B3DDA4EC2615}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1EBCF7E-766A-485C-85B0-B3DDA4EC2615}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23C73101-C3F4-440B-86BD-1EA33181B2A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23C73101-C3F4-440B-86BD-1EA33181B2A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23C73101-C3F4-440B-86BD-1EA33181B2A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23C73101-C3F4-440B-86BD-1EA33181B2A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96FEE1C5-91AF-4C0C-AA03-F5505FF1A786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96FEE1C5-91AF-4C0C-AA03-F5505FF1A786}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96FEE1C5-91AF-4C0C-AA03-F5505FF1A786}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96FEE1C5-91AF-4C0C-AA03-F5505FF1A786}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
