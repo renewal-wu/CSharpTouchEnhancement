@@ -10,7 +10,7 @@
     <projectUrl>https://gitlab.com/Garmin-PE-SW/CSharpTouchEnhancement</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Enhance MaterialDesignInXamlToolkit.</description>
-    <releaseNotes>Add BlurDrawerHostStyle.</releaseNotes>
+    <releaseNotes>Support .NET Framework 4.5+</releaseNotes>
     <copyright>Copyright 2018</copyright>
     <tags>MaterialDesignInXamlToolkit style</tags>
   </metadata>
