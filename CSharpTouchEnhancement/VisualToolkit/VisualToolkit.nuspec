@@ -10,8 +10,8 @@
     <projectUrl>https://gitlab.com/Garmin-PE-SW/CSharpTouchEnhancement</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Visual-related toolkit.</description>
-    <releaseNotes>Add VisualTreeManager.</releaseNotes>
+    <releaseNotes>Add FocusExtension.</releaseNotes>
     <copyright>Copyright 2018</copyright>
-    <tags>Visual toolkit XAML VisualTreeManager</tags>
+    <tags>Visual toolkit XAML VisualTreeManager FocusExtension</tags>
   </metadata>
 </package>
