@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:materialDesignToolkit="clr-namespace:MaterialDesignInXamlToolkitEnhancement;assembly=MaterialDesignInXamlToolkitEnhancement"
         mc:Ignorable="d"
         Title="MaterialDesignInXamlToolkitEnhancement.Sample">
     <materialDesign:DialogHost Name="rootdg" Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
-        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}" Style="{StaticResource BlurDrawerHostStyle}">
+        <materialDesignToolkit:SwipeToShowDrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}" IsSwipeToShowDrawerEnabled="True" Style="{StaticResource BlurDrawerHostStyle}">
             <materialDesign:DrawerHost.LeftDrawerContent>
                 <StackPanel>
                     <ToggleButton HorizontalAlignment="Left" VerticalAlignment="Top" Margin="16" IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
@@ -15,7 +16,7 @@
                 </StackPanel>
             </materialDesign:DrawerHost.LeftDrawerContent>
 
-            <StackPanel>
+            <StackPanel Background="Transparent">
                 <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2" Mode="PrimaryDark">
                     <Grid>
                         <ToggleButton x:Name="MenuToggleButton" HorizontalAlignment="Left" IsChecked="False" Style="{StaticResource MaterialDesignHamburgerToggleButton}" />
@@ -24,6 +25,6 @@
 
                 <TextBlock Text="Main content" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="48" />
             </StackPanel>
-        </materialDesign:DrawerHost>
+        </materialDesignToolkit:SwipeToShowDrawerHost>
     </materialDesign:DialogHost>
 </Window>
