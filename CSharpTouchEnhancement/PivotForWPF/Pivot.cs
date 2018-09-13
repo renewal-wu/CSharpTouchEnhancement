@@ -227,6 +227,8 @@ namespace PivotForWPF
             }
         }
 
+        private bool IsFirstLoaded { get; set; } = true;
+
         static Pivot()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Pivot), new FrameworkPropertyMetadata(typeof(Pivot)));
@@ -277,7 +279,11 @@ namespace PivotForWPF
                 return;
             }
 
-            SetSelectedIndex(0);
+            if (IsFirstLoaded)
+            {
+                SetSelectedIndex(0);
+                IsFirstLoaded = false;
+            }
 
             var observableCollection = Items as INotifyCollectionChanged;
             if (observableCollection == null)

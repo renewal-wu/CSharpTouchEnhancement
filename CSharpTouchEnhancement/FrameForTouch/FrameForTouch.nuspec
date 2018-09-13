@@ -10,7 +10,7 @@
     <projectUrl>https://gitlab.com/Garmin-PE-SW/CSharpTouchEnhancement</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Using gesture to navigate page.</description>
-    <releaseNotes>It is compatible with ScrollViewer.</releaseNotes>
+    <releaseNotes>Fix behavior of scrolling.</releaseNotes>
     <copyright>Copyright 2018</copyright>
     <tags>Frame Navigate SlideToNavigateFrame</tags>
   </metadata>

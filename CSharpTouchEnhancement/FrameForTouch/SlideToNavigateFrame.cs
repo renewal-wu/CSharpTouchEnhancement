@@ -147,7 +147,11 @@ namespace FrameForTouch
                     (OriginalSourceScrollViewer.HorizontalOffset == 0 && delta < 0) ||
                     (OriginalSourceScrollViewer.HorizontalOffset == OriginalSourceScrollViewer.ScrollableWidth && delta > 0))
                 {
-                    OriginalSourceScrollViewer.ScrollToHorizontalOffset(OriginalSourceScrollViewer.HorizontalOffset - delta);
+                    if (OriginalSourceScrollViewer.HorizontalScrollBarVisibility != ScrollBarVisibility.Disabled)
+                    {
+                        OriginalSourceScrollViewer.ScrollToHorizontalOffset(OriginalSourceScrollViewer.HorizontalOffset - delta);
+                    }
+
                     MouseLeftDownStartPoint = currentPoint;
 
                     IsScrollViewerMode = true;
