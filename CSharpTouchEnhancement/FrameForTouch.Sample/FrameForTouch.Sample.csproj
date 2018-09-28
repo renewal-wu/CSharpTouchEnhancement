@@ -115,5 +115,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FrameForTouch\FrameForTouch.csproj">
+      <Project>{7549ea7c-e106-4216-83b8-e44ae2224ac4}</Project>
+      <Name>FrameForTouch</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
